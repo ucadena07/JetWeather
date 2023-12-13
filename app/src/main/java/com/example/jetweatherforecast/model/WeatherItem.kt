@@ -9,6 +9,7 @@ data class WeatherItem(
     val humidity: Int,
     val pop: Double,
     val pressure: Int,
+    val rain: Double,
     val speed: Double,
     val sunrise: Int,
     val sunset: Int,
