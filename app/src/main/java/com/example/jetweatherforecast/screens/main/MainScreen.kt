@@ -33,6 +33,8 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.jetweatherforecast.data.DataOrException
 import com.example.jetweatherforecast.model.Weather
+import com.example.jetweatherforecast.utils.formatDate
+import com.example.jetweatherforecast.utils.formatDecimals
 import com.example.jetweatherforecast.widgets.WeatherAppBar
 
 @Composable
@@ -68,7 +70,7 @@ fun MainContent(padding: PaddingValues,data: Weather){
         .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "Dec 14",
+        Text(text = formatDate(data.list[0].dt),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.secondary,
             fontWeight = FontWeight.SemiBold,
@@ -80,8 +82,8 @@ fun MainContent(padding: PaddingValues,data: Weather){
         ) {
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 WeatherStateImage(imageUrl = imageUrl)
-                Text(text = "56", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.ExtraBold)
-                Text(text = "Snow",  fontStyle = FontStyle.Italic)
+                Text(text = formatDecimals(data.list[0].temp.day) + "°", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.ExtraBold)
+                Text(text = data.list[0].weather[0].main,  fontStyle = FontStyle.Italic)
             }
         }
     }
