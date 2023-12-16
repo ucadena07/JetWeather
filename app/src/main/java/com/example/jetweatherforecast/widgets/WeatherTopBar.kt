@@ -51,10 +51,10 @@ fun WeatherAppBar(
             titleContentColor = MaterialTheme.colorScheme.primary,),
         actions = {
                   if(isMainScreen){
-                      IconButton(onClick = { /*TODO*/ }) {
+                      IconButton(onClick = { onAddActionClicked.invoke() }) {
                           Icon(imageVector = Icons.Default.Search, contentDescription = "search")
                       }
-                      IconButton(onClick = { /*TODO*/ }) {
+                      IconButton(onClick = { onButtonClicked.invoke() }) {
                           Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = "more icon")
                       }
                   }else{
