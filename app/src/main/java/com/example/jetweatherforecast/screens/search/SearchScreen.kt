@@ -1,5 +1,6 @@
 package com.example.jetweatherforecast.screens.search
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.jetweatherforecast.navigation.WeatherScreens
 
 import com.example.jetweatherforecast.screens.main.MainContent
 import com.example.jetweatherforecast.widgets.WeatherAppBar
@@ -44,7 +46,9 @@ fun SearchScreen(navController: NavController){
     }) {innerPadding ->
         Surface(modifier = Modifier.padding(innerPadding)) {
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-
+                SearchBar(modifier = Modifier.fillMaxWidth().padding(16.dp).align(Alignment.CenterHorizontally)){
+                    navController.navigate(WeatherScreens.MainScreen.name + "/$it")
+                }
             }
         }
     }
@@ -52,7 +56,7 @@ fun SearchScreen(navController: NavController){
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchBar(onSearch: (String) -> Unit = {}){
+fun SearchBar(modifier: Modifier, onSearch: (String) -> Unit = {}){
     val searchQueryState = rememberSaveable {
         mutableStateOf("")
     }
@@ -61,7 +65,13 @@ fun SearchBar(onSearch: (String) -> Unit = {}){
         searchQueryState.value.trim().isNotEmpty()
     }
     Column {
-        CommonTextField(valueState = searchQueryState,placeholder = "La Crosse, US",onAction = KeyboardActions{})
+        CommonTextField(valueState = searchQueryState,placeholder = "La Crosse, US",
+            onAction = KeyboardActions{
+                if(!valid) return@KeyboardActions
+                onSearch(searchQueryState.value.trim())
+                searchQueryState.value = ""
+                keyboardController!!.hide()
+            })
     }
 }
 

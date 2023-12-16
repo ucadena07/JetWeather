@@ -40,10 +40,10 @@ import com.example.jetweatherforecast.widgets.WeatherStateImage
 
 
 @Composable
-fun MainScreen(navController: NavController, mainViewModel: MainViewModel){
+fun MainScreen(navController: NavController, mainViewModel: MainViewModel, city: String?){
     val weatherData = produceState<DataOrException<Weather,Boolean,Exception>>(
         initialValue = DataOrException(loading = true)){
-        value = mainViewModel.getWeatherData("La Crosse, US")
+        value = mainViewModel.getWeatherData(city!!)
     }.value
     if(weatherData.loading == true){
         CircularProgressIndicator()
