@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.jetweatherforecast.navigation.WeatherScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 //@Preview
@@ -123,7 +124,8 @@ fun ShowSettingDropDownMenu(showDialog: MutableState<Boolean>, navController: Na
                     "About" -> DropdownMenuItem(
                         text = { Text(text = s) },
                         onClick = { expanded = false
-                                  showDialog.value = false},
+                                  showDialog.value = false
+                                  navController.navigate(WeatherScreens.AboutScreen.name)},
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Info,
@@ -134,7 +136,8 @@ fun ShowSettingDropDownMenu(showDialog: MutableState<Boolean>, navController: Na
                     "Favorites" -> DropdownMenuItem(
                         text = { Text(text = s) },
                         onClick = { expanded = false
-                            showDialog.value = false},
+                            showDialog.value = false
+                            navController.navigate(WeatherScreens.FavoriteScreen.name)},
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.FavoriteBorder,
@@ -144,7 +147,8 @@ fun ShowSettingDropDownMenu(showDialog: MutableState<Boolean>, navController: Na
                     else -> DropdownMenuItem(
                         text = { Text(text = s) },
                         onClick = { expanded = false
-                            showDialog.value = false },
+                            showDialog.value = false
+                            navController.navigate(WeatherScreens.SettingsScreen.name)},
                         leadingIcon  = {
                             Icon(
                                 imageVector = Icons.Default.Settings,
