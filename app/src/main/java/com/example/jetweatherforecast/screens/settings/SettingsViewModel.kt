@@ -32,14 +32,17 @@ class SettingsViewModel @Inject constructor(private  val repository: WeatherDbRe
         }
     }
 
-    fun insertFavorite(unit: Unit) = viewModelScope.launch {
+    fun insertUnit(unit: Unit) = viewModelScope.launch {
         repository.insertUnit(unit)
     }
-    fun updateFavorite(unit: Unit) = viewModelScope.launch {
+    fun updateUnit(unit: Unit) = viewModelScope.launch {
         repository.updateUnit(unit)
     }
-    fun deleteFavorite(unit: Unit) = viewModelScope.launch {
+    fun deleteUnit(unit: Unit) = viewModelScope.launch {
         repository.deleteUnit(unit)
+    }
+    fun deleteAllUnits() = viewModelScope.launch {
+        repository.deleteAllUnits()
     }
 
 }
