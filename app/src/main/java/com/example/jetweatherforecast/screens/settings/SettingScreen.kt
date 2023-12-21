@@ -46,7 +46,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
     val choiceFromDb = settingsViewModel.unitList.collectAsState().value
     val defaultChoice = if(choiceFromDb.isNullOrEmpty())measurements[0] else choiceFromDb[0].unit
     var choiceState by remember { mutableStateOf(defaultChoice)}
-
+    unitToggleState = defaultChoice == "Imperial (F)"
     Scaffold(topBar = {
         WeatherAppBar(navController = navController,icon = Icons.Default.ArrowBack, isMainScreen = false, title = "Settings"){
             navController.popBackStack()

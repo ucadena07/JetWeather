@@ -19,17 +19,24 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetweatherforecast.data.DataOrException
 import com.example.jetweatherforecast.model.Weather
 import com.example.jetweatherforecast.navigation.WeatherScreens
+import com.example.jetweatherforecast.screens.settings.SettingsViewModel
 import com.example.jetweatherforecast.utils.formatDate
 import com.example.jetweatherforecast.utils.formatDecimals
 import com.example.jetweatherforecast.widgets.HumidityWindPressureRow
@@ -40,16 +47,28 @@ import com.example.jetweatherforecast.widgets.WeatherStateImage
 
 
 @Composable
-fun MainScreen(navController: NavController, mainViewModel: MainViewModel, city: String?){
-    val weatherData = produceState<DataOrException<Weather,Boolean,Exception>>(
-        initialValue = DataOrException(loading = true)){
-        value = mainViewModel.getWeatherData(city!!)
-    }.value
-    if(weatherData.loading == true){
-        CircularProgressIndicator()
-    }else if(weatherData.data != null){
-        MainScaffold(weather = weatherData.data!!,navController)
+fun MainScreen(navController: NavController, mainViewModel: MainViewModel,settingsViewModel: SettingsViewModel = hiltViewModel() ,city: String?){
+    val unitFromDb = settingsViewModel.unitList.collectAsState().value
+    var unit by remember {
+        mutableStateOf("imperial")
     }
+    var isImperial by remember{
+        mutableStateOf(false)
+    }
+    if(!unitFromDb.isNullOrEmpty()){
+        unit = unitFromDb[0].unit.split(" ")[0].lowercase()
+        isImperial = unit == "imperial"
+        val weatherData = produceState<DataOrException<Weather,Boolean,Exception>>(
+            initialValue = DataOrException(loading = true)){
+            value = mainViewModel.getWeatherData(city = city!!, unit = unit)
+        }.value
+        if(weatherData.loading == true){
+            CircularProgressIndicator()
+        }else if(weatherData.data != null){
+            MainScaffold(weather = weatherData.data!!,navController)
+        }
+    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
