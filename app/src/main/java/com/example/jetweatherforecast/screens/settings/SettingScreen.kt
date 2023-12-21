@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,7 +43,10 @@ import com.example.jetweatherforecast.widgets.WeatherAppBar
 fun SettingsScreen(navController: NavController, settingsViewModel: SettingsViewModel = hiltViewModel()){
     var unitToggleState by remember { mutableStateOf(false)}
     val measurements = listOf("Imperial (F)", "Metric (C)")
-    var choiceState by remember { mutableStateOf("")}
+    val choiceFromDb = settingsViewModel.unitList.collectAsState().value
+    val defaultChoice = if(choiceFromDb.isNullOrEmpty())measurements[0] else choiceFromDb[0].unit
+    var choiceState by remember { mutableStateOf(defaultChoice)}
+
     Scaffold(topBar = {
         WeatherAppBar(navController = navController,icon = Icons.Default.ArrowBack, isMainScreen = false, title = "Settings"){
             navController.popBackStack()
